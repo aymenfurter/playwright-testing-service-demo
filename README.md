@@ -9,7 +9,7 @@ This repository demonstrates the use of Microsoft's Playwright Testing Service. 
 
 - **Test Scenarios**: The `tests` directory contains four test scenario files ([scenario1.test.js](tests/scenario1.test.js), [scenario2.test.js](tests/scenario2.test.js), [scenario3.test.js](tests/scenario3.test.js), [scenario4.test.js](tests/scenario4.test.js)). Each file represents a different user interaction scenario with the chatbot.
 
-- **Chatbot Page Object**: The [ChatbotPage](tests/pages/ChatbotPage.js) class encapsulates the operations performed on the chatbot page, such as navigating to the page and asking the bot a question.
+- **Chatbot Page Object**: The [ChatbotPage](tests/pages/ChatbotPage.js](https://github.com/aymenfurter/playwright-testing-service-demo/blob/main/pages/ChatbotPage.js) class encapsulates the operations performed on the chatbot page, such as navigating to the page and asking the bot a question.
 
 - **Test Helpers**: The [testHelpers.js](tests/testHelpers.js) file provides helper functions used in the test scenarios.
 
