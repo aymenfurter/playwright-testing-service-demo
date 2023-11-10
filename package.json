@@ -1,0 +1,28 @@
+{
+  "name": "playwright-testing-service-demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aymenfurter/playwright-testing-service-demo.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aymenfurter/playwright-testing-service-demo/issues"
+  },
+  "homepage": "https://github.com/aymenfurter/playwright-testing-service-demo#readme",
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "jest-image-snapshot": "^6.2.0",
+    "playwright": "^1.39.0"
+  },
+  "dependencies": {
+    "playwright-core": "^1.39.0"
+  }
+}
