@@ -1,18 +1,18 @@
-const { chromium } = require('playwright');
+const { test, expect } = require('@playwright/test');
 const ChatbotPage = require('../pages/ChatbotPage');
+const { getContentLength, waitForContentGrowth } = require('./testHelpers');
 
-describe('Scenario 4 - Casual Chatbot Interaction', () => {
-    let browser, page, chatbotPage;
+test.describe('Scenario 4 - Casual Chatbot Interaction', () => {
+    let page, chatbotPage;
 
-    beforeAll(async () => {
-        browser = await chromium.launch();
+    test.beforeAll(async ({ browser }) => {
         page = await browser.newPage();
         chatbotPage = new ChatbotPage(page);
     });
 
-    it('engages in a casual conversation with the bot and checks for response growth', async () => {
+    test('engages in a casual conversation with the bot and checks for response growth', async () => {
         await chatbotPage.navigate(process.env.TEST_URL);
-        const initialContentLength = await getContentLength();
+        const initialContentLength = await getContentLength(page);
 
         // Example chit-chat questions
         const questions = [
@@ -24,31 +24,14 @@ describe('Scenario 4 - Casual Chatbot Interaction', () => {
 
         for (const question of questions) {
             await chatbotPage.askQuestion(question);
-            await waitForContentGrowth(initialContentLength);
+            await waitForContentGrowth(page, initialContentLength);
         }
 
         console.log('Conversation Content:', await chatbotPage.getContentText());
     });
 
-    afterAll(async () => {
-        await browser.close();
+    test.afterAll(async () => {
+        await page.close();
     });
-
-    async function getContentLength() {
-        return await page.evaluate(() => {
-            const content = document.querySelector('.content');
-            return content ? content.innerHTML.length : 0;
-        });
-    }
-
-    async function waitForContentGrowth(previousLength) {
-        await page.waitForFunction(
-            (previousLength) => {
-                const content = document.querySelector('.content');
-                return content && content.innerHTML.length > previousLength;
-            },
-            previousLength
-        );
-    }
 });
 

@@ -1,47 +1,30 @@
-const { chromium } = require('playwright');
+const { test, expect } = require('@playwright/test');
 const ChatbotPage = require('../pages/ChatbotPage');
+const { getContentLength, waitForContentGrowth } = require('./testHelpers');
 
-describe('Scenario 3 - Grounding in Chatbot Development Inquiry', () => {
-    let browser, page, chatbotPage;
+test.describe('Scenario 3 - Grounding in Chatbot Development Inquiry', () => {
+    let page, chatbotPage;
 
-    beforeAll(async () => {
-        browser = await chromium.launch();
+    test.beforeAll(async ({ browser }) => {
         page = await browser.newPage();
         chatbotPage = new ChatbotPage(page);
     });
 
-    it('asks the bot about the concept of grounding in chatbot development and checks for response growth', async () => {
+    test('asks the bot about the concept of grounding in chatbot development and checks for response growth', async () => {
         await chatbotPage.navigate(process.env.TEST_URL);
-        const initialContentLength = await getContentLength();
+        const initialContentLength = await getContentLength(page);
 
         await chatbotPage.askQuestion('What is the concept of grounding when building a chatbot?');
-        await waitForContentGrowth(initialContentLength);
+        await waitForContentGrowth(page, initialContentLength);
 
         await chatbotPage.askQuestion('Do you have any best practices for implementing grounding?');
-        await waitForContentGrowth(initialContentLength);
+        await waitForContentGrowth(page, initialContentLength);
 
         console.log('Conversation Content:', await chatbotPage.getContentText());
     });
 
-    afterAll(async () => {
-        await browser.close();
+    test.afterAll(async () => {
+        await page.close();
     });
-
-    async function getContentLength() {
-        return await page.evaluate(() => {
-            const content = document.querySelector('.content');
-            return content ? content.innerHTML.length : 0;
-        });
-    }
-
-    async function waitForContentGrowth(previousLength) {
-        await page.waitForFunction(
-            (previousLength) => {
-                const content = document.querySelector('.content');
-                return content && content.innerHTML.length > previousLength;
-            },
-            previousLength
-        );
-    }
 });
 

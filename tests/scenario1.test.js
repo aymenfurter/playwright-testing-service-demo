@@ -1,51 +1,30 @@
-const { chromium } = require('playwright');
+const { test, expect } = require('@playwright/test');
 const ChatbotPage = require('../pages/ChatbotPage');
+const { getContentLength, waitForContentGrowth } = require('./testHelpers');
 
-describe('Scenario 1 - Pod Sandboxing Inquiry', () => {
-    let browser, page, chatbotPage;
+test.describe('Scenario 1 - Pod Sandboxing Inquiry', () => {
+    let page, chatbotPage;
 
-    beforeAll(async () => {
-        browser = await chromium.launch();
+    test.beforeAll(async ({ browser }) => {
         page = await browser.newPage();
         chatbotPage = new ChatbotPage(page);
     });
 
-    it('asks the bot about pod sandboxing and checks for response growth', async () => {
-        console.log('Navigating to the chatbot page ' + process.env.TEST_URL);
+    test('asks the bot about pod sandboxing and checks for response growth', async () => {
         await chatbotPage.navigate(process.env.TEST_URL);
-        const initialContentLength = await getContentLength();
-        console.log(`Initial content length: ${initialContentLength}`);
+        const initialContentLength = await getContentLength(page);
 
-        console.log('Asking the first question');
         await chatbotPage.askQuestion('Tell me about pod sandboxing?');
-        await waitForContentGrowth(initialContentLength);
+        await waitForContentGrowth(page, initialContentLength);
 
-        console.log('Asking the follow-up question');
         await chatbotPage.askQuestion('Is pod sandboxing still in preview?');
-        await waitForContentGrowth(initialContentLength);
+        await waitForContentGrowth(page, initialContentLength);
 
         console.log('Conversation Content:', await chatbotPage.getContentText());
     });
 
-    afterAll(async () => {
-        await browser.close();
+    test.afterAll(async () => {
+        await page.close();
     });
-
-    async function getContentLength() {
-        return await page.evaluate(() => {
-            const content = document.querySelector('.content');
-            return content ? content.innerHTML.length : 0;
-        });
-    }
-
-    async function waitForContentGrowth(previousLength) {
-        await page.waitForFunction(
-            (previousLength) => {
-                const content = document.querySelector('.content');
-                return content && content.innerHTML.length > previousLength;
-            },
-            previousLength
-        );
-    }
 });
 
