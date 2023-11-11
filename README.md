@@ -58,4 +58,6 @@ For insights on scaling and speeding up your Playwright tests, check out the fol
 For background information and guidance on implementing visual comparisons in your Playwright tests, refer to this guide:
 - [Configuring Visual Comparisons in Playwright](https://learn.microsoft.com/en-gb/azure/playwright-testing/how-to-configure-visual-comparisons)
 
-
+### Scaleability Demonstration
+The following repository demonstrates how to effectively scale to a thousands of tests, executed in parallel
+- [microsoft/playwright-testing-service](https://github.com/microsoft/playwright-testing-service/tree/main)
