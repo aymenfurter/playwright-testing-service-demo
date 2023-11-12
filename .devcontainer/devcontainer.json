@@ -1,0 +1,9 @@
+{
+	"name": "Node.js",
+	"image": "mcr.microsoft.com/vscode/devcontainers/javascript-node:14",
+	"forwardPorts": [3000],
+	"settings": { 
+	  "terminal.integrated.shell.linux": "/bin/bash"
+	},
+	"extensions": ["dbaeumer.vscode-eslint"]
+  }
